@@ -10,6 +10,8 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <random>
+#include <ctime>
 
 #include "./param.h"
 #include "../common/random.h"
@@ -94,6 +96,11 @@ class ColMaker: public TreeUpdater {
       std::vector<int> newnodes;
       this->InitData(gpair, *p_fmat, *p_tree);
       this->InitNewNode(qexpand_, gpair, *p_fmat, *p_tree);
+      // TK:
+      std::default_random_engine generator (time(0));
+      std::uniform_int_distribution<int> distribution(1,param_.max_depth);
+      int max_depth = distribution(generator); // first draw always the same!
+      max_depth = distribution(generator);
       for (int depth = 0; depth < param_.max_depth; ++depth) {
         this->FindSplit(depth, qexpand_, gpair, p_fmat, p_tree);
         this->ResetPosition(qexpand_, p_fmat, *p_tree);
